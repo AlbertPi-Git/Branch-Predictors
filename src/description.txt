@@ -1,0 +1,8 @@
+TAGE is implemented as custom branch predictor. 
+
+Refered paper is: Seznec, André. "A case for (partially)-tagged geometric history length predictors." Journal of InstructionLevel Parallelism (2006).
+
+In my implementation, 13 bits of PC is used for indexing BHT of basic predictor, each entry of BHT is a 2 bits counter. And there are 3 partial tables, each partial table is indexed by hash result of part of pc and global history, which is 12 bits long. Each entry of partial table includes tag, 2 bits counter and 2 bits whether usefule mark. Theoratically, tag should be several bits, however, when I reduce tag until it reaches 0 bit, the performance doesn't change. (Maybe part of implementaion is wrong). While, according to that fact, I set the tag as 0 bit. GHR used here is 64 bits.
+
+So 2^13*2+3*2^12*4+64 = (8*2+3*4*4)K+64 = 64K+64 bits are used in my implementation.
+
