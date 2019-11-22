@@ -9,20 +9,13 @@
 #include "predictor.h"
 #include <math.h>
 
-//
-// TODO:Student Information
-//
-const char *studentName = "Wang Pi";
-const char *studentID   = "A53298021";
-const char *email       = "wapi@ucsd.edu";
-
 //------------------------------------//
 //      Predictor Configuration       //
 //------------------------------------//
 
 // Handy Global for use in output routines
 const char *bpName[4] = { "Static", "Gshare",
-                          "Tournament", "Custom" };
+                          "Tournament", "TAGE" };
 
 int ghistoryBits; // Number of bits used for Global History
 int lhistoryBits; // Number of bits used for local History
@@ -54,7 +47,7 @@ _Bool local_res;
 //-------------Data Structure for TAGE----------
 #define PAR_TABLE_NUM 3  //Number of partial tables in TAGE 
 #define TAGE_CNT_BITS 2  //Two bits counter in each entry of partial table
-#define TAGE_TAG_BITS 0  //Bits of tag in each entry of partial table 
+#define TAGE_TAG_BITS 2  //Bits of tag in each entry of partial table 
 #define GHRLEN_COM_RATIO 2.1  //Common ratio of history length seqeuence
 #define GHRLEN_MIN 11 //The global history length used in the first partial table
 //GHRLEN_MIN*(GHRLEN_COM_RATIO)^(i-1) is the global history length used in ith table
@@ -129,7 +122,7 @@ void init_predictor(){
 			local_BHT[i]=WN;
 		local_PHT_mask=local_BHT_size-1;	
 
-	}else if(bpType==CUSTOM){
+	}else if(bpType==TAGE){
 		TAGE_GHR=0;
 
 		TAGE_PAR_INDEX_BITS[0]=12;
@@ -186,7 +179,7 @@ uint8_t make_prediction(uint32_t pc){
 		case TOURNAMENT:
 			// fprintf(stdout,"The result is: %u\n",tournament_predict(pc));
 			return tournament_predict(pc);
-		case CUSTOM:
+		case TAGE:
 			return TAGE_predict(pc);
 		default:
 			break;
@@ -207,10 +200,13 @@ void train_predictor(uint32_t pc, uint8_t outcome){
 			return;
 		case GSHARE:
 			gshare_train(outcome);
+			return;
 		case TOURNAMENT:
 			tournament_train(outcome);
-		case CUSTOM:
+			return;
+		case TAGE:
 			TAGE_train(pc,outcome);
+			return;
 		default:
 			break;
 	}

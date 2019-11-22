@@ -12,12 +12,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-//
-// Student Information
-//
-extern const char *studentName;
-extern const char *studentID;
-extern const char *email;
 
 //------------------------------------//
 //      Global Predictor Defines      //
@@ -29,7 +23,7 @@ extern const char *email;
 #define STATIC      0
 #define GSHARE      1
 #define TOURNAMENT  2
-#define CUSTOM      3
+#define TAGE        3
 extern const char *bpName[];
 
 // Definitions for 2-bit counters

@@ -23,10 +23,10 @@ void usage(){
 	fprintf(stderr,	" --help	Print this message\n");
 	fprintf(stderr,	" --verbose	Print predictions on stdout\n");
 	fprintf(stderr,	" --<type>	Branch prediction scheme:\n");
-	fprintf(stderr,	"	static\n"
-					"	gshare:<# ghistory>\n"
-					"	tournament:<# ghistory>:<# lhistory>:<# index>\n"
-					"	custom\n");
+	fprintf(stderr,	"		static\n"
+					"		gshare:<# ghistory>\n"
+					"		tournament:<# ghistory>:<# lhistory>:<# index>\n"
+					"		TAGE\n");
 }
 
 // Process an option and update the predictor
@@ -43,8 +43,8 @@ int handle_option(char *arg){
 	} else if (!strncmp(arg,"--tournament:",13)) {
 		bpType = TOURNAMENT;
 		sscanf(arg+13,"%d:%d:%d", &ghistoryBits, &lhistoryBits, &pcIndexBits);
-	} else if (!strcmp(arg,"--custom")) {
-		bpType = CUSTOM;
+	} else if (!strcmp(arg,"--TAGE")) {
+		bpType = TAGE;
 	} else if (!strcmp(arg,"--verbose")) {
 		verbose = 1;
 	} else {
@@ -76,6 +76,7 @@ int main(int argc, char *argv[]){
 	stream = stdin;
 	bpType = STATIC;
 	verbose = 0;
+
 
 	// Process cmdline Arguments
 	for (int i = 1; i < argc; ++i) {
